@@ -140,7 +140,7 @@ const MainPageFooter = () => {
   }, []);
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 bg-white text-black py-8">
+    <div className=" bg-white text-black py-8">
       <div className="flex flex-col items-center justify-center w-full">
         <div className="grid grid-cols-4 gap-20 w-full max-w-7xl px-4">
           <div className="flex flex-col">

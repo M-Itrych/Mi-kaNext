@@ -16,7 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Mi-Ka sp. z o.o",
-  description: "Firma MI-KA sp z o.o działa od 2008 roku w Wejherowie i na Pomorzu. Specjalizujemy się w technice grzewczej i sanitarnej, oferując nowoczesne systemy ...",
+  description:
+    "Firma MI-KA sp z o.o działa od 2008 roku w Wejherowie i na Pomorzu. Specjalizujemy się w technice grzewczej i sanitarnej, oferując nowoczesne systemy ...",
 };
 
 export default function RootLayout({
@@ -29,9 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBar />
-        {children}
-        <MainPageFooter />
+        <div className="relative min-h-screen flex flex-col">
+          <NavBar />
+          <div className="flex-grow">{children}</div>
+          <MainPageFooter />
+        </div>
       </body>
     </html>
   );
