@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import type { Map as LeafletMap } from "leaflet";
+import Image from "next/image";
 
 interface LeafletElement extends HTMLElement {
   _leaflet_id?: number;
@@ -140,43 +141,46 @@ const MainPageFooter = () => {
   }, []);
 
   return (
-    <div className=" bg-white text-black py-8">
-      <div className="flex flex-col items-center justify-center w-full">
-        <div className="grid grid-cols-4 gap-20 w-full max-w-7xl px-4">
-          <div className="flex flex-col">
-            <h3 className="font-bold mb-2">
+    <div className="bg-white text-black py-4 md:py-8">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12">
+          <div className="flex flex-col mb-6 sm:mb-0">
+            <h3 className="font-bold mb-2 text-sm md:text-base">
               Należymy do Grupy Polskie Hurtownie Instalacyjne, która zrzesza
               PONAD 40 przedsiębiorstw z branży instalacyjnej, grzewczej i
               sanitarnej.
             </h3>
-            <img
-              src="/images/logo.png"
+            <Image
+              src="/phi.png"
               alt="Grupa Polskie Hurtownie Instalacyjne"
-              className="w-1/2 h-auto"
+              className="w-32 md:w-1/2 h-auto"
+              width={200}
+              height={100}
+              priority
             />
           </div>
 
-          <div className="flex flex-col">
-            <h3 className="font-bold mb-2">MI-KA SP. Z.O.O</h3>
-            <p className="mb-2 font-bold">
+          <div className="flex flex-col mb-6 sm:mb-0">
+            <h3 className="font-bold mb-2 text-sm md:text-base">MI-KA SP. Z.O.O</h3>
+            <p className="mb-2 font-bold text-xs md:text-sm">
               Hurtownia Hydrauliczna, Biuro Projektowe, Serwis
             </p>
-            <p className="mb-2">ul. Kopernika 23</p>
-            <p className="mb-2">84-241 Gościcino</p>
-            <p className="mb-2">
+            <p className="mb-2 text-xs md:text-sm">ul. Kopernika 23</p>
+            <p className="mb-2 text-xs md:text-sm">84-241 Gościcino</p>
+            <p className="mb-2 text-xs md:text-sm">
               tel. <span className="text-orange-500">58 74 44 500</span>
             </p>
-            <p className="mb-2 font-bold">Oddział Hurtowni w Pucku</p>
-            <p className="mb-2">ul. Topolowa 11</p>
-            <p className="mb-2">84-100 Puck</p>
+            <p className="mb-2 font-bold text-xs md:text-sm">Oddział Hurtowni w Pucku</p>
+            <p className="mb-2 text-xs md:text-sm">ul. Topolowa 11</p>
+            <p className="mb-2 text-xs md:text-sm">84-100 Puck</p>
           </div>
 
-          <div className="flex flex-col">
-            <h3 className="font-bold mb-2">Centrala:</h3>
-            <p className="mb-2">
+          <div className="flex flex-col mb-6 sm:mb-0">
+            <h3 className="font-bold mb-2 text-sm md:text-base">Centrala:</h3>
+            <p className="mb-2 text-xs md:text-sm">
               tel. <span className="text-orange-500">+48 605 255 552</span>
             </p>
-            <p className="mb-2">
+            <p className="mb-2 text-xs md:text-sm">
               E-Mail:{" "}
               <a
                 href="mailto:administracja@mi-ka.pl"
@@ -188,15 +192,15 @@ const MainPageFooter = () => {
           </div>
 
           <div className="flex flex-col">
-            <h3 className="font-bold mb-2">Nasze lokalizacje</h3>
-            <div className="w-full h-60 bg-gray-200 rounded overflow-hidden">
+            <h3 className="font-bold mb-2 text-sm md:text-base">Nasze lokalizacje</h3>
+            <div className="w-full h-48 md:h-60 bg-gray-200 rounded overflow-hidden">
               <div id="map" className="w-full h-full" />
             </div>
           </div>
         </div>
 
-        <div className="mt-8 text-center flex">
-          <a className="mr-4 cursor-pointer font-bold">Polityka prywatności</a>
+        <div className="mt-6 md:mt-8 text-center flex flex-col md:flex-row justify-center items-center text-xs md:text-sm">
+          <a className="mb-2 md:mb-0 md:mr-4 cursor-pointer font-bold">Polityka prywatności</a>
           <div>© {time} Mi-Ka sp.z.o.o. Wszelkie prawa zastrzeżone.</div>
         </div>
       </div>

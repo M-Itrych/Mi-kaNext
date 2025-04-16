@@ -43,7 +43,7 @@ export const Card: React.FC<CardProps> = ({ title, icon, imageSrc, altText, navT
             {getIcon()}
           </div>
         </div>
-        <h3 className="text-white text-xl font-bold mt-4">{title} d</h3>
+        <h3 className="text-white text-xl font-bold mt-4">{title}</h3>
       </div>
     </div>
     </Link>
