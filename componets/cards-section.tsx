@@ -6,19 +6,22 @@ export const CardsSection = () => {
           title: "Hurtownia Instalacyjna",
           icon: "warehouse" as const,
           imageSrc: "/hurtownia.jpg",
-          altText: "Warehouse workers organizing packages"
+          altText: "Warehouse workers organizing packages",
+          navTo: "/hurtownia"
         },
         {
           title: "Biuro Projektowe",
           icon: "design" as const,
           imageSrc: "/projekty.jpg",
-          altText: "Design office with house model"
+          altText: "Design office with house model",
+            navTo: "/projekty"
         },
         {
           title: "Serwis",
           icon: "service" as const,
           imageSrc: "/serwis.jpg",
-          altText: "Service technician with wrench"
+          altText: "Service technician with wrench",
+          navTo: "/serwis"
         }
       ];
     return (
