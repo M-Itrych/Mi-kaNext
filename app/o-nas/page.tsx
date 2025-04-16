@@ -1,4 +1,4 @@
-import InfoCards, { InfoCardsProvider } from "@/componets/info-cards";
+import InfoCards, { InfoCardsProvider } from "@/components/info-cards";
 import React from "react";
 
 const OnasPage = () => {

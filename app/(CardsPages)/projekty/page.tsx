@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import InfoCards, { InfoCardsProvider } from "@/componets/info-cards";
+import InfoCards, { InfoCardsProvider } from "@/components/info-cards";
 
 const Projekty: React.FC = () => {
   const projectCards = [

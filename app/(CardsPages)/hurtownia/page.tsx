@@ -1,7 +1,7 @@
 "use client";
 
-import InfoCards, { InfoCardsProvider } from "@/componets/info-cards";
-import SupplierCarousel from "@/componets/supplier-carousel";
+import InfoCards, { InfoCardsProvider } from "@/components/info-cards";
+import SupplierCarousel from "@/components/supplier-carousel";
 import React from "react";
 
 const Hurtownia: React.FC = () => {
