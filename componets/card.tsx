@@ -1,14 +1,16 @@
 import { Warehouse, FileText, Wrench } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type CardProps = {
   title: string;
   icon: 'warehouse' | 'design' | 'service';
   imageSrc: string;
   altText: string;
+  navTo: string;
 };
 
-export const Card: React.FC<CardProps> = ({ title, icon, imageSrc, altText }) => {
+export const Card: React.FC<CardProps> = ({ title, icon, imageSrc, altText, navTo }) => {
   const getIcon = () => {
     switch (icon) {
       case 'warehouse':
@@ -23,7 +25,8 @@ export const Card: React.FC<CardProps> = ({ title, icon, imageSrc, altText }) =>
   };
 
   return (
-    <div className="relative w-full sm:w-80 md:w-96 h-96 sm:h-112 md:h-100 rounded-lg overflow-hidden shadow-lg">
+    <Link href={navTo}>
+    <div className="relative w-full sm:w-80 md:w-96 h-96 sm:h-112 md:h-100 rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out">
       <div className="h-3/4 w-full relative">
         <Image
           src={imageSrc}
@@ -40,8 +43,9 @@ export const Card: React.FC<CardProps> = ({ title, icon, imageSrc, altText }) =>
             {getIcon()}
           </div>
         </div>
-        <h3 className="text-white text-xl font-bold mt-4">{title}</h3>
+        <h3 className="text-white text-xl font-bold mt-4">{title} d</h3>
       </div>
     </div>
+    </Link>
   );
 };
