@@ -1,22 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 interface Supplier {
   url: string;
   link: string;
 }
 
-export default function Dostawcy() {
+const SupplierCarousel: React.FC = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const dostawcy: Supplier[] = [
+  const suppliers: Supplier[] = [
     { url: "1.webp", link: "http://www.aco.pl" },
     { url: "2.webp", link: "http://www.afriso.pl/" },
     { url: "3.webp", link: "http://www.agaflex.pl" },
@@ -122,49 +129,79 @@ export default function Dostawcy() {
     { url: "103.webp", link: "https://www.vaillant.pl/klienci-indywidualni/" },
   ];
 
-  const sortedDostawcy = [...dostawcy].sort((a, b) => {
-    const getDomain = (url: string): string => {
-      let domain = url.replace(/^(https?:\/\/)?(www\.)?/, "");
-      domain = domain.replace(/\/$/, "");
-      return domain.toLowerCase();
-    };
-
+  const getDomain = (url: string): string => {
+    let domain = url.replace(/^(https?:\/\/)?(www\.)?/, "");
+    domain = domain.replace(/\/$/, "");
+    return domain.split("/")[0].toLowerCase();
+  };
+  const sortedSuppliers = [...suppliers].sort((a, b) => {
     const domainA = getDomain(a.link);
     const domainB = getDomain(b.link);
-
     return domainA.localeCompare(domainB);
   });
 
-  return (
-    <main className="flex-grow container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-center mb-12 text-black">
-        Nasi Dostawcy
-      </h1>
+  if (!mounted) {
+    return null;
+  }
 
-      {mounted && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-          {sortedDostawcy.map((supplier, index) => (
-            <Link
-              key={index}
-              href={supplier.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white rounded-lg shadow hover:shadow-xl transition-all duration-300 p-4 flex items-center justify-center h-32 hover:-translate-y-1"
-            >
-              <div className="relative w-full h-full">
-                <Image
-                  src={`/dostawcy/${supplier.url}`}
-                  alt={`Dostawca ${index + 1}`}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
-                  className="object-contain"
-                  priority={index < 12}
-                />
-              </div>
-            </Link>
-          ))}
+  return (
+    <section className="w-full bg-white py-10 md:py-14">
+      <div className="container mx-auto px-4 md:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#0F172A] mb-8 font-urbanist">
+          Nasi dostawcy
+        </h2>
+
+        <div className="mx-auto max-w-6xl relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+              skipSnaps: true,
+              slidesToScroll: 3,
+            }}
+            className="w-full px-10"
+          >
+            <CarouselContent className="-ml-4">
+              {sortedSuppliers.map((supplier, index) => (
+                <CarouselItem
+                  key={`supplier-${index}`}
+                  className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+                >
+                  <Link
+                    href={supplier.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center p-4 h-28 bg-white border border-gray-100 rounded-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  >
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={`/dostawcy/${supplier.url}`}
+                        alt={`Dostawca ${getDomain(supplier.link)}`}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                        className="object-contain"
+                        priority={index < 10}
+                      />
+                    </div>
+                  </Link>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0 bg-white hover:bg-white hover:text-orange-500 border-0 shadow-none" />
+            <CarouselNext className="right-0 bg-white hover:bg-white hover:text-orange-500 border-0 shadow-none" />
+          </Carousel>
         </div>
-      )}
-    </main>
+        <div className="text-center mt-8">
+          <Link
+            href="/dostawcy"
+            className="inline-block px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-md font-medium transition-colors shadow-md hover:shadow-lg"
+          >
+            Zobacz wszystkich dostawców
+          </Link>
+        </div>
+      </div>
+    </section>
   );
-}
+};
+
+export default SupplierCarousel;
