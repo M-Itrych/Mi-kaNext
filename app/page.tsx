@@ -1,5 +1,5 @@
-import { CardsSection } from "@/componets/cards-section";
-import MainPageFooter from "@/componets/navigation/MainPageFooter";
+import { CardsSection } from "@/components/cards-section";
+import MainPageFooter from "@/components/navigation/MainPageFooter";
 
 export default function Home() {
   return (
