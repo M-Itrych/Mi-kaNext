@@ -9,7 +9,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from "@/components/ui/carousel";
+} from "./ui/carousel";
 
 interface Supplier {
   url: string;
