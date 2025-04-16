@@ -46,7 +46,7 @@ const InfoCards: React.FC<InfoCardsProps> = ({
       className={`
         rounded-[10px] 
         p-4 sm:p-6 md:p-8 lg:p-[50px]
-        ${isActive ? "bg-black" : "bg-white"}
+        ${isActive ? "bg-white" : "bg-black"}
         flex
         h-auto min-h-[200px] sm:min-h-[250px] md:min-h-[300px] lg:h-[400px]
         w-full
@@ -66,14 +66,14 @@ const InfoCards: React.FC<InfoCardsProps> = ({
     >
       <h2
         className={`${
-          isActive ? "text-white" : "text-black"
+          isActive ? "text-black" : "text-white"
         } text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-urbanist`}
       >
         {title}
       </h2>
       <p
         className={`${
-          isActive ? "text-white" : "text-black"
+          isActive ? "text-black" : "text-white"
         } text-sm sm:text-base font-normal leading-relaxed font-inter`}
       >
         {description}
