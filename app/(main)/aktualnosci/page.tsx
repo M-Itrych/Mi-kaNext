@@ -50,91 +50,24 @@ export default function News() {
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   
   const itemsPerPage = 6;
-
-  // In a real implementation, uncomment this to fetch from API
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await fetch(`/api/news`);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch data");
-  //       }
-  //       const data = await response.json();
-  //       setNews(data);
-  //     } catch (error) {
-  //       console.error("Error fetching news:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   
-  //   fetchData();
-  // }, []);
-
-  // Mock data for demonstration
   useEffect(() => {
-    const mockData: NewsItem[] = [
-      {
-        id: "1",
-        date: new Date("2025-03-15"),
-        title: "Company Expansion to European Markets",
-        description: "We're excited to announce our expansion into several European markets, including Germany, France, and Spain. This strategic move allows us to better serve our growing international customer base and tap into new opportunities.",
-        imageUrl: "/api/placeholder/800/500"
-      },
-      {
-        id: "2",
-        date: new Date("2025-03-10"),
-        title: "New Product Launch Event",
-        description: "Join us next month for the unveiling of our revolutionary new product line that will change how you work. The virtual event will feature demonstrations, Q&A sessions, and special offers for early adopters.",
-        imageUrl: "/api/placeholder/800/500"
-      },
-      {
-        id: "3",
-        date: new Date("2025-03-05"),
-        title: "Annual Charity Drive Results",
-        description: "Thanks to the generosity of our employees and partners, we've raised over $50,000 for local charities during our annual charity drive. These funds will support education initiatives and community development programs.",
-        imageUrl: "/api/placeholder/800/500"
-      },
-      {
-        id: "4",
-        date: new Date("2025-02-28"),
-        title: "Industry Award Recognition",
-        description: "We're proud to announce that our company has been recognized with three industry awards for innovation, customer service, and sustainability efforts. These accolades reflect our team's dedication to excellence.",
-        imageUrl: "/api/placeholder/800/500"
-      },
-      {
-        id: "5",
-        date: new Date("2025-02-20"),
-        title: "Partnership with Tech Giant",
-        description: "We've entered into a strategic partnership with a leading technology company to develop integrated solutions for the healthcare sector. This collaboration will combine our expertise to address critical industry challenges.",
-        imageUrl: "/api/placeholder/800/500"
-      },
-      {
-        id: "6",
-        date: new Date("2025-02-15"),
-        title: "Sustainability Initiative Launch",
-        description: "Our company is launching a comprehensive sustainability program focused on reducing our carbon footprint, minimizing waste, and promoting eco-friendly practices throughout our operations and supply chain.",
-        imageUrl: "/api/placeholder/800/500"
-      },
-      {
-        id: "7",
-        date: new Date("2025-02-10"),
-        title: "Employee Recognition Program",
-        description: "Introducing our revamped employee recognition program designed to celebrate outstanding contributions and promote a culture of appreciation. The program includes peer nominations and quarterly awards.",
-        imageUrl: "/api/placeholder/800/500"
-      },
-      {
-        id: "8",
-        date: new Date("2025-02-05"),
-        title: "Quarterly Financial Results",
-        description: "We're pleased to report strong financial performance for Q4 2024, with revenue growth exceeding market expectations. This success positions us well for continued expansion and investment in 2025.",
-        imageUrl: "/api/placeholder/800/500"
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/news`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setNews(data);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      } finally {
+        setLoading(false);
       }
-    ];
+    };
     
-    setNews(mockData);
-    setLoading(false);
+    fetchData();
   }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

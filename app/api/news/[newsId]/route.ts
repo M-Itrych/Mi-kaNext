@@ -14,9 +14,16 @@ const newsUpdateSchema = z.object({
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { newsId: string } }
+  { params }: { params: { newsId: string } }    
 ) {
   try {
+    console.log("Route params:", params);
+    console.log("newsId from params:", params.newsId);
+    
+    if (!params.newsId) {
+      return new NextResponse("Missing newsId parameter", { status: 400 });
+    }
+
     const newsItem = await db.news.findUnique({
       where: {
         id: params.newsId,
@@ -27,7 +34,7 @@ export async function GET(
       return new NextResponse("News not found", { status: 404 });
     }
 
-    // If news is not published, only allow admin to see it
+
     if (newsItem.status !== "PUBLISHED") {
       const session = await getServerSession(authOptions);
       if (!session || session.user.role !== "ADMIN") {
@@ -38,7 +45,7 @@ export async function GET(
     return NextResponse.json(newsItem);
   } catch (error) {
     console.error("Error getting news item:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(`Internal Server Error: ${error instanceof Error ? error.message : 'Unknown error'}`, { status: 500 });
   }
 }
 
@@ -47,6 +54,7 @@ export async function PATCH(
   { params }: { params: { newsId: string } }
 ) {
   try {
+    
     const session = await getServerSession(authOptions);
 
     if (!session || session.user.role !== "ADMIN") {
@@ -55,6 +63,10 @@ export async function PATCH(
 
     const json = await req.json();
     const body = newsUpdateSchema.parse(json);
+
+    if (!params.newsId) {
+      return new NextResponse("Missing newsId parameter", { status: 400 });
+    }
 
     const existingNews = await db.news.findUnique({
       where: {
@@ -87,7 +99,7 @@ export async function PATCH(
       return new NextResponse(JSON.stringify(error.errors), { status: 400 });
     }
     
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(`Internal Server Error: ${error instanceof Error ? error.message : 'Unknown error'}`, { status: 500 });
   }
 }
 
@@ -96,10 +108,17 @@ export async function DELETE(
   { params }: { params: { newsId: string } }
 ) {
   try {
+    // Debug log
+    console.log("DELETE - Route params:", params);
+    
     const session = await getServerSession(authOptions);
 
     if (!session || session.user.role !== "ADMIN") {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if (!params.newsId) {
+      return new NextResponse("Missing newsId parameter", { status: 400 });
     }
 
     const existingNews = await db.news.findUnique({
@@ -121,6 +140,6 @@ export async function DELETE(
     return new NextResponse(null, { status: 204 });
   } catch (error) {
     console.error("Error deleting news:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(`Internal Server Error: ${error instanceof Error ? error.message : 'Unknown error'}`, { status: 500 });
   }
 }

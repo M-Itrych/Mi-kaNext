@@ -26,11 +26,6 @@ const navItems = [
     href: "/admin/aktualnosci",
     icon: <FileText className="h-5 w-5" />,
   },
-  {
-    title: "Ustawienia",
-    href: "/admin/ustawienia",
-    icon: <Settings className="h-5 w-5" />,
-  },
 ];
 
 export function AdminSidebar() {
