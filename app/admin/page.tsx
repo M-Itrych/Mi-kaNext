@@ -97,28 +97,6 @@ export default async function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
-
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Szybkie Linki</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
-            <CardHeader>
-              <CardTitle>Zarządzaj Aktualnościami</CardTitle>
-              <CardDescription>
-                Dodawaj, edytuj i publikuj aktualności na swojej stronie
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
-            <CardHeader>
-              <CardTitle>Ustawienia</CardTitle>
-              <CardDescription>
-                Zmień ustawienia konta i strony
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-      </div>
     </div>
   );
 }

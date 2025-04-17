@@ -34,11 +34,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import RichTextToolbar from "./rich-text-toolbar";
+import { FileUpload } from "@/components/admin/file-upload";
 
 const newsFormSchema = z.object({
   title: z.string().min(1, "Tytuł jest wymagany"),
   description: z.string().min(1, "Opis jest wymagany"),
-  imageUrl: z.string().optional(),
+  imageUrl: z.string().nullable().optional(),
   status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]),
 });
 
@@ -65,7 +66,7 @@ export function NewsForm({ initialData }: NewsFormProps) {
     defaultValues: {
       title: initialData?.title || "",
       description: initialData?.description || "",
-      imageUrl: initialData?.imageUrl || "",
+      imageUrl: initialData?.imageUrl || null,
       status: initialData?.status || "DRAFT",
     },
   });
@@ -170,6 +171,54 @@ export function NewsForm({ initialData }: NewsFormProps) {
               <div className="grid gap-4">
                 <FormField
                   control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Zdjęcie główne</FormLabel>
+                      <FormControl>
+                        <FileUpload 
+                          value={field.value || null} 
+                          onChange={field.onChange}
+                          disabled={isSaving}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Dodaj zdjęcie główne aktualności
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Wybierz status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="DRAFT">Wersja robocza</SelectItem>
+                          <SelectItem value="PUBLISHED">Opublikowany</SelectItem>
+                          <SelectItem value="ARCHIVED">Zarchiwizowany</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Ustaw status aktualności. Tylko opublikowane aktualności są widoczne na stronie.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="title"
                   render={({ field }) => (
                     <FormItem>
@@ -205,7 +254,7 @@ export function NewsForm({ initialData }: NewsFormProps) {
                   <FormLabel>Treść</FormLabel>
                   <Card>
                     <CardContent className="p-0">
-                      <div className="border-b p-2">
+                      <div className="border-b pl-4 pb-4">
                         {editor && <RichTextToolbar editor={editor} />}
                       </div>
                       <div className="min-h-[300px] p-4">
@@ -220,56 +269,7 @@ export function NewsForm({ initialData }: NewsFormProps) {
               </div>
             </TabsContent>
             <TabsContent value="settings" className="space-y-6">
-              <div className="grid gap-4">
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>URL obrazka</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="https://example.com/image.jpg" 
-                          {...field} 
-                          value={field.value || ''}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Wprowadź pełny URL do obrazka głównego aktualności
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select 
-                        onValueChange={field.onChange} 
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Wybierz status" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="DRAFT">Wersja robocza</SelectItem>
-                          <SelectItem value="PUBLISHED">Opublikowany</SelectItem>
-                          <SelectItem value="ARCHIVED">Zarchiwizowany</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        Ustaw status aktualności. Tylko opublikowane aktualności są widoczne na stronie.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              
             </TabsContent>
           </Tabs>
           
@@ -312,4 +312,5 @@ export function NewsForm({ initialData }: NewsFormProps) {
         </form>
       </Form>
     </div>
-  );}
+  );
+}
