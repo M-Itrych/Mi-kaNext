@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import DOMPurify from "dompurify";
 import Image from "next/image";
 import { ArrowLeft, Calendar, Printer } from "lucide-react";
-import { Card } from "@/components/ui/card";
+
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 

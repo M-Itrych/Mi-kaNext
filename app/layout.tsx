@@ -15,10 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mi-Ka sp. z o.o",
-  description:
-    "Firma MI-KA sp z o.o działa od 2008 roku w Wejherowie i na Pomorzu. Specjalizujemy się w technice grzewczej i sanitarnej, oferując nowoczesne systemy ...",
-};
+  title: "Mi-Ka - Hurtownia Instalacyjna, Biuro Projektowe i Serwis | Wejherowo",
+  description: "MI-KA to kompleksowe usługi w branży instalacyjno-sanitarnej i grzewczej. Oferujemy profesjonalną hurtownię, biuro projektowe oraz serwis techniczny na Pomorzu od 2008 roku.",
+  keywords: "MI-KA, Wejherowo, hurtownia instalacyjna, biuro projektowe, serwis kotłów, pompy ciepła, technika grzewcza, instalacje sanitarne",
+ };
 
 export default function RootLayout({
   children,

@@ -6,6 +6,16 @@ import { join } from "path";
 import { existsSync } from "fs";
 import { v4 as uuidv4 } from "uuid";
 
+// Set body size limit for file uploads
+export const config = {
+  api: {
+    // Disable default body parser for file uploads
+    bodyParser: false,
+    // Increase size limit for files (5MB)
+    responseLimit: '5mb',
+  },
+};
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -33,9 +43,16 @@ export async function POST(req: NextRequest) {
     }
 
     // Create directory if it doesn't exist
-    const uploadDir = join(process.cwd(), "public", "news");
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
+    const uploadDir = join(process.cwd(), "public", "uploaded-files");
+    
+    try {
+      // Check if directory exists and create it if not
+      if (!existsSync(uploadDir)) {
+        await mkdir(uploadDir, { recursive: true });
+      }
+    } catch (dirError) {
+      console.error("Error creating directory:", dirError);
+      return new NextResponse("Error creating upload directory", { status: 500 });
     }
 
     // Generate unique filename
@@ -43,23 +60,22 @@ export async function POST(req: NextRequest) {
     const fileName = `${uuidv4()}.${fileExtension}`;
     const filePath = join(uploadDir, fileName);
 
-    // Convert file to buffer and save it
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filePath, buffer);
+    try {
+      // Convert file to buffer and save it
+      const buffer = Buffer.from(await file.arrayBuffer());
+      await writeFile(filePath, buffer);
+    } catch (writeError) {
+      console.error("Error writing file:", writeError);
+      return new NextResponse("Error saving file", { status: 500 });
+    }
 
     // Return URL to saved file
-    const fileUrl = `/news/${fileName}`;
+    const fileUrl = `/uploaded-files/${fileName}`;
+    console.log("File successfully uploaded:", fileUrl);
 
     return NextResponse.json({ url: fileUrl }, { status: 201 });
   } catch (error) {
     console.error("Error uploading file:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(`Internal Server Error: ${error instanceof Error ? error.message : 'Unknown error'}`, { status: 500 });
   }
 }
-
-// Set larger body size limit for file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};

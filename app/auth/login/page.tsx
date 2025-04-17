@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { z } from "zod";
@@ -29,7 +29,8 @@ const loginSchema = z.object({
 
 type LoginValues = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+// Create a component that uses useSearchParams
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/admin";
@@ -70,6 +71,82 @@ export default function LoginPage() {
   }
 
   return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="email"
+                  placeholder="email@example.com"
+                  autoComplete="email"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Hasło</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="password"
+                  placeholder="********"
+                  autoComplete="current-password"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={loading}
+        >
+          {loading ? "Logowanie..." : "Zaloguj się"}
+        </Button>
+      </form>
+    </Form>
+  );
+}
+
+// Create a loading fallback for the Suspense boundary
+function LoginFormFallback() {
+  return (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <div className="h-5 w-12 bg-gray-200 rounded animate-pulse"></div>
+        <div className="h-10 w-full bg-gray-200 rounded animate-pulse"></div>
+      </div>
+      <div className="space-y-2">
+        <div className="h-5 w-12 bg-gray-200 rounded animate-pulse"></div>
+        <div className="h-10 w-full bg-gray-200 rounded animate-pulse"></div>
+      </div>
+      <div className="h-10 w-full bg-gray-200 rounded animate-pulse"></div>
+    </div>
+  );
+}
+
+// Main page component that wraps the form in a Suspense boundary
+export default function LoginPage() {
+  return (
     <div className="flex items-center justify-center min-h-screen bg-background">
       <div className="w-full max-w-md px-4">
         <Card>
@@ -80,59 +157,9 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {error && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="email"
-                          placeholder="email@example.com"
-                          autoComplete="email"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Hasło</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="password"
-                          placeholder="********"
-                          autoComplete="current-password"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={loading}
-                >
-                  {loading ? "Logowanie..." : "Zaloguj się"}
-                </Button>
-              </form>
-            </Form>
+            <Suspense fallback={<LoginFormFallback />}>
+              <LoginForm />
+            </Suspense>
           </CardContent>
           <CardFooter className="flex justify-center">
             <Link href="/" className="text-sm text-muted-foreground hover:text-primary">
