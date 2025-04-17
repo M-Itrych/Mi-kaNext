@@ -1,3 +1,4 @@
+// app/api/upload/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -69,8 +70,8 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Error saving file", { status: 500 });
     }
 
-    // Return URL to saved file
-    const fileUrl = `/uploaded-files/${fileName}`;
+    // Return URL to saved file - use new API route pattern
+    const fileUrl = `/api/uploaded-files/${fileName}`;
     console.log("File successfully uploaded:", fileUrl);
 
     return NextResponse.json({ url: fileUrl }, { status: 201 });

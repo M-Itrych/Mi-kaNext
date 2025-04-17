@@ -9,13 +9,13 @@ import { cn } from "@/lib/utils";
 
 interface FileUploadProps {
   onChange: (url: string | null) => void;
-  value: string | null;
+  value: string | null | undefined;
   disabled?: boolean;
 }
 
 export function FileUpload({ onChange, value, disabled }: FileUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
-  const [preview, setPreview] = useState<string | null>(value);
+  const [preview, setPreview] = useState<string | null | undefined>(value);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

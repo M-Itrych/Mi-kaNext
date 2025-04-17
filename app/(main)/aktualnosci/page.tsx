@@ -1,3 +1,4 @@
+// app/(main)/aktualnosci/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -77,6 +78,12 @@ export default function News() {
 
   const handleSortChange = (value: SortOption) => {
     setSortBy(value);
+  };
+
+  // Process image URLs to work with our API route if they're local uploaded files
+  const processImageUrl = (url: string | null): string | null => {
+    if (!url) return null;
+    return url.startsWith('/uploaded-files/') ? `/api${url}` : url;
   };
 
   // Filter and sort news
@@ -175,7 +182,7 @@ export default function News() {
                       <div className="h-48 overflow-hidden relative">
                         {item.imageUrl && (
                           <Image 
-                            src={item.imageUrl} 
+                            src={processImageUrl(item.imageUrl) || ""} 
                             alt={item.title} 
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

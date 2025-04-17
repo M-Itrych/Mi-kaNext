@@ -200,7 +200,7 @@ const MainPageFooter = () => {
         </div>
 
         <div className="mt-6 md:mt-8 text-center flex flex-col md:flex-row justify-center items-center text-xs md:text-sm">
-          <a className="mb-2 md:mb-0 md:mr-4 cursor-pointer font-bold">Polityka prywatności</a>
+          <a className="mb-2 md:mb-0 md:mr-4 cursor-pointer font-bold" href="/polityka-prywatnosci">Polityka prywatności</a>
           <div>© {time} Mi-Ka sp.z.o.o. Wszelkie prawa zastrzeżone.</div>
         </div>
       </div>

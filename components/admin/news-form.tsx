@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -61,6 +61,12 @@ export function NewsForm({ initialData }: NewsFormProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Process the initial image URL for display if it's a local uploaded file
+  const processedImageUrl = initialData?.imageUrl && 
+    initialData.imageUrl.startsWith('/uploaded-files/') 
+    ? `/api${initialData.imageUrl}` 
+    : initialData?.imageUrl;
+
   const form = useForm<NewsFormValues>({
     resolver: zodResolver(newsFormSchema),
     defaultValues: {
@@ -111,6 +117,12 @@ export function NewsForm({ initialData }: NewsFormProps) {
       
       const content = editor?.getHTML() || "";
       
+      // Process imageUrl to store the original path without /api/ prefix
+      let submissionData = {...data};
+      if (submissionData.imageUrl?.startsWith('/api/uploaded-files/')) {
+        submissionData.imageUrl = submissionData.imageUrl.replace('/api', '');
+      }
+      
       if (initialData) {
         // Update existing news
         const response = await fetch(`/api/news/${initialData.id}`, {
@@ -119,7 +131,7 @@ export function NewsForm({ initialData }: NewsFormProps) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...data,
+            ...submissionData,
             content,
           }),
         });
@@ -137,7 +149,7 @@ export function NewsForm({ initialData }: NewsFormProps) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ...data,
+            ...submissionData,
             content,
           }),
         });
@@ -158,6 +170,21 @@ export function NewsForm({ initialData }: NewsFormProps) {
     }
   }
   
+  // Use effect to handle updates to FileUpload value
+  useEffect(() => {
+    // Watch for changes in imageUrl from the form
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'imageUrl' && value.imageUrl) {
+        // If this is an API URL but the form contains the direct path, update it
+        if (!value.imageUrl.startsWith('/api/') && value.imageUrl.startsWith('/uploaded-files/')) {
+          form.setValue('imageUrl', `/api${value.imageUrl}`);
+        }
+      }
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [form]);
+  
   return (
     <div className="space-y-6">
       <Form {...form}>
@@ -165,7 +192,6 @@ export function NewsForm({ initialData }: NewsFormProps) {
           <Tabs defaultValue="content" className="w-full">
             <TabsList>
               <TabsTrigger value="content">Treść</TabsTrigger>
-              <TabsTrigger value="settings">Ustawienia</TabsTrigger>
             </TabsList>
             <TabsContent value="content" className="space-y-6">
               <div className="grid gap-4">
@@ -177,8 +203,15 @@ export function NewsForm({ initialData }: NewsFormProps) {
                       <FormLabel>Zdjęcie główne</FormLabel>
                       <FormControl>
                         <FileUpload 
-                          value={field.value || null} 
-                          onChange={field.onChange}
+                          value={field.value}
+                          onChange={(url) => {
+                            // If we get a direct path from the FileUpload, convert it to API path
+                            if (url && url.startsWith('/uploaded-files/')) {
+                              field.onChange(`/api${url}`);
+                            } else {
+                              field.onChange(url);
+                            }
+                          }}
                           disabled={isSaving}
                         />
                       </FormControl>

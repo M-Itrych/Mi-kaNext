@@ -1,3 +1,4 @@
+// app/(main)/aktualnosci/[newsId]/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -23,7 +24,7 @@ export default function NewsDetail() {
   const [newsItem, setNewsItem] = useState<NewsItem | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const params = useParams();
-  const newsId = params.newsId as string; // Changed from id to newsId to match route
+  const newsId = params.newsId as string;
   const router = useRouter();
 
   // Debug log to see what params we're getting
@@ -121,6 +122,11 @@ export default function NewsDetail() {
     );
   }
 
+  // Process the image URL to work with our API route if it's a local uploaded file
+  const processedImageUrl = newsItem.imageUrl && newsItem.imageUrl.startsWith('/uploaded-files/') 
+    ? `/api${newsItem.imageUrl}` 
+    : newsItem.imageUrl;
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1 container mx-auto px-4 py-8">
@@ -148,18 +154,18 @@ export default function NewsDetail() {
             </div>
           </div>
           
-          <div className="mb-8 relative h-96 w-full">
-            {newsItem.imageUrl && (
+          {processedImageUrl && (
+            <div className="mb-8 relative h-96 w-full">
               <Image 
-                src={newsItem.imageUrl} 
+                src={processedImageUrl} 
                 alt={newsItem.title} 
                 fill
-                className="object-cover rounded-lg"
+                className="object-contain rounded-lg"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1200px, 1200px"
                 priority
               />
-            )}
-          </div>
+            </div>
+          )}
           
           {newsItem.content && (
             <div 
