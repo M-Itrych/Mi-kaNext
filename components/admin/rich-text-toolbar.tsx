@@ -111,7 +111,7 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
       <Toggle
         size="sm"
         pressed={editor.isActive({ textAlign: "left" })}
-        onPressedChange={() => editor.chain().focus().setAlign("left").run()}
+        onPressedChange={() => editor.chain().focus().setTextAlign("left").run()}
       >
         <AlignLeft className="h-4 w-4" />
       </Toggle>
@@ -119,7 +119,7 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
         size="sm"
         pressed={editor.isActive({ textAlign: "center" })}
         onPressedChange={() =>
-          editor.chain().focus().setAlign("center").run()
+          editor.chain().focus().setTextAlign("center").run()
         }
       >
         <AlignCenter className="h-4 w-4" />
