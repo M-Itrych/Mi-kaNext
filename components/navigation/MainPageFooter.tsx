@@ -161,7 +161,9 @@ const MainPageFooter = () => {
           </div>
 
           <div className="flex flex-col mb-6 sm:mb-0">
-            <h3 className="font-bold mb-2 text-sm md:text-base">MI-KA SP. Z.O.O</h3>
+            <h3 className="font-bold mb-2 text-sm md:text-base">
+              MI-KA SP. Z.O.O
+            </h3>
             <p className="mb-2 font-bold text-xs md:text-sm">
               Hurtownia Hydrauliczna, Biuro Projektowe, Serwis
             </p>
@@ -170,7 +172,9 @@ const MainPageFooter = () => {
             <p className="mb-2 text-xs md:text-sm">
               tel. <span className="text-orange-500">58 74 44 500</span>
             </p>
-            <p className="mb-2 font-bold text-xs md:text-sm">Oddział Hurtowni w Pucku</p>
+            <p className="mb-2 font-bold text-xs md:text-sm">
+              Oddział Hurtowni w Pucku
+            </p>
             <p className="mb-2 text-xs md:text-sm">ul. Topolowa 11</p>
             <p className="mb-2 text-xs md:text-sm">84-100 Puck</p>
           </div>
@@ -189,10 +193,21 @@ const MainPageFooter = () => {
                 administracja@mi-ka.pl
               </a>
             </p>
+            <p className="mb-2 text-xs md:text-sm">
+              NIP:{" "}
+              <a
+                href="mailto:administracja@mi-ka.pl"
+                className="text-orange-500"
+              >
+                588-250-7688
+              </a>
+            </p>
           </div>
 
           <div className="flex flex-col">
-            <h3 className="font-bold mb-2 text-sm md:text-base">Nasze lokalizacje</h3>
+            <h3 className="font-bold mb-2 text-sm md:text-base">
+              Nasze lokalizacje
+            </h3>
             <div className="w-full h-48 md:h-60 bg-gray-200 rounded overflow-hidden">
               <div id="map" className="w-full h-full" />
             </div>
@@ -200,7 +215,9 @@ const MainPageFooter = () => {
         </div>
 
         <div className="mt-6 md:mt-8 text-center flex flex-col md:flex-row justify-center items-center text-xs md:text-sm">
-          <a className="mb-2 md:mb-0 md:mr-4 cursor-pointer font-bold">Polityka prywatności</a>
+          <a className="mb-2 md:mb-0 md:mr-4 cursor-pointer font-bold">
+            Polityka prywatności
+          </a>
           <div>© {time} Mi-Ka sp.z.o.o. Wszelkie prawa zastrzeżone.</div>
         </div>
       </div>
