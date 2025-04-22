@@ -189,6 +189,15 @@ const MainPageFooter = () => {
                 administracja@mi-ka.pl
               </a>
             </p>
+            <p className="mb-2 text-xs md:text-sm">
+              NIP:{" "}
+              <a
+                href="mailto:administracja@mi-ka.pl"
+                className="text-orange-500"
+              >
+                588-250-7688
+              </a>
+            </p>
           </div>
 
           <div className="flex flex-col">
