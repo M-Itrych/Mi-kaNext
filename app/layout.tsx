@@ -39,6 +39,9 @@ export const metadata: Metadata = {
   referrer: "origin-when-cross-origin",
   creator: "MI-KA",
   publisher: "MI-KA",
+  verification: {
+    google: "bkdtL5vshuYzBkMbYGD_vSM1UYDC_itpjz21wxbo2Oo",
+  },
 };
 
 export default function RootLayout({
