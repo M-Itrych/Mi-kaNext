@@ -1,0 +1,57 @@
+// Template konfiguracji PM2 dla Mi-ka Next.js
+// Skopiuj ten plik do katalogu projektu na serwerze jako ecosystem.config.js
+// i dostosuj ścieżki oraz parametry
+
+module.exports = {
+  apps: [
+    {
+      name: 'mika-nextjs',
+      script: 'npm',
+      args: 'start',
+      cwd: '/home/michal/v2.mi-ka.pl', // ZMIEŃ na właściwą ścieżkę
+      
+      // Tryb klastra dla lepszej wydajności
+      instances: 2, // Lub 'max' dla wykorzystania wszystkich CPU
+      exec_mode: 'cluster',
+      
+      // Zmienne środowiskowe
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+      },
+      
+      // Ścieżka do pliku .env (jeśli używasz)
+      env_file: '/home/michal/v2.mi-ka.pl/.env.production', // ZMIEŃ na właściwą ścieżkę
+      
+      // Logi
+      error_file: '/home/michal/v2.mi-ka.pl/logs/pm2-error.log',
+      out_file: '/home/michal/v2.mi-ka.pl/logs/pm2-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      merge_logs: true,
+      
+      // Automatyczne zarządzanie
+      autorestart: true,
+      watch: false, // false w produkcji!
+      max_memory_restart: '500M',
+      min_uptime: '10s',
+      max_restarts: 10,
+      restart_delay: 4000,
+      
+      // Instancje klastra
+      kill_timeout: 5000,
+      listen_timeout: 3000,
+      
+      // Monitoring
+      pmx: true,
+    },
+  ],
+};
+
+// Instrukcje użycia:
+// 1. Skopiuj ten plik jako ecosystem.config.js w katalogu projektu na serwerze
+// 2. Dostosuj ścieżki (cwd, env_file, error_file, out_file)
+// 3. Utwórz katalog na logi: mkdir -p /home/michal/v2.mi-ka.pl/logs
+// 4. Uruchom: pm2 start ecosystem.config.js
+// 5. Zapisz: pm2 save
+// 6. Skonfiguruj autostart: pm2 startup
+

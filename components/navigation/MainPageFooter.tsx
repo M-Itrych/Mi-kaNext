@@ -93,7 +93,7 @@ const MainPageFooter = () => {
             const puckPopupContent = `
             <div class="p-2">
               <h3 class="font-bold text-base mb-1">Mi-Ka sp.z.o.o</h3>
-              <p class="mb-1">ul. Topolowa 11</p>
+              <p class="mb-1">ul. Żarnowiecka 15</p>
               <p class="mb-1">84-100 Puck</p>
               <p class="mt-2">
                 <a href="https://maps.app.goo.gl/XePuU5vYr6jFtWBu7" target="_blank" class="text-blue-600 underline">Pokaż trasę</a>
@@ -171,7 +171,7 @@ const MainPageFooter = () => {
               tel. <span className="text-orange-500">58 74 44 500</span>
             </p>
             <p className="mb-2 font-bold text-xs md:text-sm">Oddział Hurtowni w Pucku</p>
-            <p className="mb-2 text-xs md:text-sm">ul. Topolowa 11</p>
+            <p className="mb-2 text-xs md:text-sm">ul. Żarnowiecka 15</p>
             <p className="mb-2 text-xs md:text-sm">84-100 Puck</p>
           </div>
 

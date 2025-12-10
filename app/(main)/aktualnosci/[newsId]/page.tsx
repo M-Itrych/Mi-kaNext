@@ -10,6 +10,7 @@ import { ArrowLeft, Calendar, Printer } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ImageModal } from "@/components/ui/image-modal";
 
 interface NewsItem {
   id: string;
@@ -23,6 +24,7 @@ interface NewsItem {
 export default function NewsDetail() {
   const [newsItem, setNewsItem] = useState<NewsItem | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const params = useParams();
   const newsId = params.newsId as string;
   const router = useRouter();
@@ -81,6 +83,11 @@ export default function NewsDetail() {
     if (typeof window !== 'undefined') {
       window.print();
     }
+  };
+
+  // Handle image click
+  const handleImageClick = () => {
+    setIsImageModalOpen(true);
   };
 
   if (loading) {
@@ -155,12 +162,12 @@ export default function NewsDetail() {
           </div>
           
           {processedImageUrl && (
-            <div className="mb-8 relative h-96 w-full">
+            <div className="mb-8 relative h-96 w-full group cursor-pointer" onClick={handleImageClick}>
               <Image 
                 src={processedImageUrl} 
                 alt={newsItem.title} 
                 fill
-                className="object-contain rounded-lg"
+                className="object-contain rounded-lg transition-transform duration-200 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 1200px, 1200px"
                 priority
               />
@@ -183,6 +190,16 @@ export default function NewsDetail() {
           </div>
         </article>
       </main>
+
+      {/* Image Modal */}
+      {processedImageUrl && (
+        <ImageModal
+          src={processedImageUrl}
+          alt={newsItem.title}
+          isOpen={isImageModalOpen}
+          onClose={() => setIsImageModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
