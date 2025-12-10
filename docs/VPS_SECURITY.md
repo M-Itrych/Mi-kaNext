@@ -386,7 +386,8 @@ module.exports = {
   apps: [
     {
       name: 'mika-nextjs',
-      script: 'npm',
+      // Używamy bezpośredniej ścieżki do next (zapobiega problemom z PATH)
+      script: 'node_modules/.bin/next',
       args: 'start',
       cwd: '/home/michal/v2.mi-ka.pl',
       instances: 2, // Dla lepszej wydajności
@@ -403,6 +404,7 @@ module.exports = {
       max_memory_restart: '500M',
       min_uptime: '10s',
       max_restarts: 10,
+      env_file: '/home/michal/v2.mi-ka.pl/.env.production',
     },
   ],
 };
@@ -619,6 +621,88 @@ sudo apt list --upgradable
 
 ---
 
+## Rozwiązywanie problemów z PM2
+
+### Problem: "next: not found"
+
+Jeśli widzisz błąd `sh: 1: next: not found` w logach PM2:
+
+**Rozwiązanie:**
+1. Użyj bezpośredniej ścieżki do Next.js w `ecosystem.config.js`:
+   ```javascript
+   script: 'node_modules/.bin/next',  // zamiast 'npm'
+   args: 'start',
+   ```
+
+2. Alternatywnie, upewnij się że `node_modules` są zainstalowane:
+   ```bash
+   cd /home/michal/v2.mi-ka.pl
+   npm install
+   ```
+
+3. Użyj skryptu naprawczego:
+   ```bash
+   bash scripts/fix-pm2-issues.sh
+   ```
+
+### Problem: Port 3000 już w użyciu (EADDRINUSE)
+
+Jeśli widzisz błąd `EADDRINUSE: address already in use :::3000`:
+
+**Rozwiązanie:**
+```bash
+# Sprawdź co zajmuje port
+sudo lsof -i:3000
+# lub
+sudo netstat -tlnp | grep :3000
+
+# Zabij proces (uważaj, może to być Twoja aplikacja!)
+sudo kill -9 <PID>
+
+# Albo użyj skryptu naprawczego
+bash scripts/fix-pm2-issues.sh
+```
+
+### Problem: Aplikacja nie startuje lub restartuje się w kółko
+
+**Rozwiązanie:**
+1. Sprawdź logi błędów:
+   ```bash
+   pm2 logs mika-nextjs --err
+   ```
+
+2. Sprawdź czy build istnieje:
+   ```bash
+   ls -la .next
+   # Jeśli brak, zbuduj:
+   npm run build
+   ```
+
+3. Sprawdź zmienne środowiskowe:
+   ```bash
+   cat .env.production
+   # Upewnij się że wszystkie wymagane zmienne są ustawione
+   ```
+
+4. Zatrzymaj wszystkie procesy i uruchom ponownie:
+   ```bash
+   pm2 delete all
+   pm2 start ecosystem.config.js
+   ```
+
+### Problem: PM2 nie uruchamia się po restarcie serwera
+
+**Rozwiązanie:**
+```bash
+# Skonfiguruj autostart (użyj komendy z outputu pm2 startup)
+sudo env PATH=$PATH:/usr/local/bin /usr/local/lib/node_modules/pm2/bin/pm2 startup systemd -u michal --hp /home/michal
+
+# Zapisz aktualną konfigurację
+pm2 save
+```
+
+---
+
 ## Przydatne komendy
 
 ```bash
@@ -630,20 +714,30 @@ pm2 status
 # Logi
 sudo tail -f /var/log/nginx/v2.mi-ka.pl.error.log
 pm2 logs mika-nextjs
+pm2 logs mika-nextjs --err  # Tylko błędy
 sudo journalctl -u nginx -f
 
 # Restart serwisów
 sudo systemctl restart nginx
 pm2 restart mika-nextjs
+pm2 reload mika-nextjs  # Graceful reload (lepsze niż restart)
 sudo systemctl restart mysql
 
 # Sprawdzenie portów
 sudo netstat -tlnp | grep :3000
 sudo ss -tlnp | grep :3000
+sudo lsof -i:3000
 
 # Sprawdzenie bezpieczeństwa
 sudo fail2ban-client status sshd
 sudo ufw status verbose
+
+# PM2 - zarządzanie
+pm2 stop all
+pm2 restart all
+pm2 delete all
+pm2 info mika-nextjs
+pm2 monit  # Monitor w czasie rzeczywistym
 ```
 
 ---

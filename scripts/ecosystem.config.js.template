@@ -6,7 +6,8 @@ module.exports = {
   apps: [
     {
       name: 'mika-nextjs',
-      script: 'npm',
+      // Używamy bezpośredniej ścieżki do next zamiast npm (zapobiega problemom z PATH)
+      script: 'node_modules/.bin/next',
       args: 'start',
       cwd: '/home/michal/v2.mi-ka.pl', // ZMIEŃ na właściwą ścieżkę
       
